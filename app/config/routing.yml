@@ -1,0 +1,9 @@
+nog_app:
+    resource: "@NogAppBundle/Controller"
+    type:     annotation
+    prefix:   /
+
+nog_site:
+    resource: "@NogSiteBundle/Controller"
+    type:     annotation
+    prefix:   /

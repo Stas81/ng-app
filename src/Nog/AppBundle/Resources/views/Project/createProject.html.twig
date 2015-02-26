@@ -1,0 +1,47 @@
+{% extends "::base.html.twig" %}
+{% block body %}    
+{{ form_start(form) }}
+    {# render the task's only field: description #}
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+
+    <ul class="files" data-prototype="{{ form_widget(form.files.vars.prototype)|e }}">
+        {# iterate over each existing tag and render its only field: name #}
+        {% for file in form.files %}
+            <li>{{ form_row(file.file) }}</li>
+        {% endfor %}
+    </ul>    	    
+{{ form_end(form) }}
+
+
+{% endblock %}
+
+{% block javascripts %}  
+    {{ parent() }}    
+    <script>
+        var $collectionHolder;
+
+        var $addFileLink = $('<a href="#" class="add_file_link">Add a file</a>');
+        var $newLinkLi = $('<li></li>').append($addFileLink);
+
+        jQuery(document).ready(function() {
+            $collectionHolder = $('ul.files');
+            $collectionHolder.append($newLinkLi);
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addFileLink.on('click', function(e) {
+                e.preventDefault();
+                addFileForm($collectionHolder, $newLinkLi);
+            });
+        });
+        function addFileForm($collectionHolder, $newLinkLi) {        
+            var prototype = $collectionHolder.data('prototype');
+            var index = $collectionHolder.data('index');
+            var newForm = prototype.replace(/__name__/g, index);
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+        }
+    </script>    
+    
+{% endblock %}
