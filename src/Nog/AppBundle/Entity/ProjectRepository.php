@@ -34,9 +34,9 @@ class ProjectRepository extends EntityRepository
         return $result;
     }
     
-    public function findProjectsWithRatingsByAuthor(User $author, $offset = 0, $limit = 10)
+    public function findProjectsWithRatingByAuthor(User $author, $offset = 0, $limit = 10)
     {
-        $result = $this->em->createQuery(
+        $result = $this->getEntityManager()->createQuery(
                 'SELECT p as project, AVG(r.rating) as rating FROM NogAppBundle:Project p
                     LEFT JOIN NogAppBundle:ProjectRating r WITH p = r.project
                     WHERE p.author = :author 
@@ -50,9 +50,9 @@ class ProjectRepository extends EntityRepository
     }    
     
     
-    public function findProjectsWithRatings($offset = 0, $limit = 10)
+    public function findProjectsWithRating($offset = 0, $limit = 10)
     {
-        $result = $this->em->createQuery(
+        $result = $this->getEntityManager()->createQuery(
                 'SELECT p as project, AVG(r.rating) as rating FROM NogAppBundle:Project p
                     LEFT JOIN NogAppBundle:ProjectRating r WITH p = r.project                    
                     GROUP BY p

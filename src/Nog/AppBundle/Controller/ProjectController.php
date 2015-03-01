@@ -70,7 +70,7 @@ class ProjectController extends Controller
     public function removeAction(Request $request) 
     {
         $project = $this->projectManager->getProjectForViewById(6);
-        $result = $this->projectManager->selectProjectRating($project);
+        $result = $this->projectManager->getProjectsWithRating($project);
         var_dump($result);
         die;
     }

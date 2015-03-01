@@ -172,18 +172,46 @@ class ProjectManager
         $user = $this->securityContext->getToken()->getUser();
         if (!$user instanceof User) {
             return null;
-        }        
-        $returnAllProjects = $user->hasRole(SecurityRoles::VISOR) || 
-                    $user->hasRole(SecurityRoles::RATER) || 
-                    $user->hasRole(SecurityRoles::ADMIN) || 
-                    $user->hasRole(SecurityRoles::SUPER_ADMIN);
+        }
         $projectRepo = $this->em->getRepository('NogAppBundle:Project');
                 
-        if ($returnAllProjects) {
+        if ($this->userCanViewAllProjects($user)) {
             $result = $projectRepo->findProjects();
         } else {
             $result = $projectRepo->findProjectsByAuthor($user);
         }
+        return $result;
+    }
+    
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getProjectsWithRating() 
+    {
+        $user = $this->securityContext->getToken()->getUser();
+        if (!$user instanceof User) {
+            return null;
+        }
+        $projectRepo = $this->em->getRepository('NogAppBundle:Project');
+        
+        if ($this->userCanViewAllProjects($user)) {
+            $result = $projectRepo->findProjectsWithRating();
+        } else {
+            $result = $projectRepo->findProjectsWithRatingByAuthor($user);
+        }
+        return $result;        
+    }
+    
+    /**
+     * @param User $user
+     * @return boolean
+     */
+    private function userCanViewAllProjects(User $user)
+    {
+        $result = $user->hasRole(SecurityRoles::VISOR) || 
+                    $user->hasRole(SecurityRoles::RATER) || 
+                    $user->hasRole(SecurityRoles::ADMIN) || 
+                    $user->hasRole(SecurityRoles::SUPER_ADMIN);        
         return $result;
     }
 }
