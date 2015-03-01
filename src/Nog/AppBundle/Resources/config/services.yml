@@ -1,5 +1,29 @@
+imports:
+    - { resource: admin.yml }
 services:
+    
+    nogapp.twig_extension:
+        class: Nog\AppBundle\Twig\NogAppExtension
+        public: false
+        tags:
+            - { name: twig.extension }    
+    
     nogapp.form.type.project:
         class: Nog\AppBundle\Form\Type\ProjectType
         tags:
             - { name: form.type, alias: project }
+            
+    nogapp.project.file.namer:
+        class: Nog\AppBundle\Service\ProjectDirectoryNamer
+
+    nogapp.project.manager:
+        class: Nog\AppBundle\Service\ProjectManager
+        calls:
+            - [setEntityManager, ["@doctrine.orm.entity_manager"]]
+            - [setSecurityContext, ["@security.context"]]
+
+    nogapp.rating.manager:
+        class: Nog\AppBundle\Service\RatingManager
+        calls:
+            - [setEntityManager, ["@doctrine.orm.entity_manager"]]
+            - [setSecurityContext, ["@security.context"]]            

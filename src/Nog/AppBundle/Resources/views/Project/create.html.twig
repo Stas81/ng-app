@@ -1,0 +1,59 @@
+{% extends "::base.html.twig" %}
+{% block body %}    
+{{ form_start(form) }}    
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}
+    <div id="files-forms-add">
+        <a href="#" class="add_file_link">Add a file</a>
+    </div>
+    <ul class="files" data-prototype="{{ form_widget(form.files.vars.prototype)|e }}">        
+        {% for file in form.files %}
+            <li class="project-file">{{ form_row(file.file) }}</li>
+        {% endfor %}
+    </ul>    	    
+{{ form_end(form) }}
+
+
+{% endblock %}
+
+{% block javascripts %}  
+    {{ parent() }}    
+    <script>
+        var $collectionHolder;
+
+        var $addFileLink = $('a.add_file_link');
+
+        $(document).ready(function() {                        
+            $collectionHolder = $('ul.files');
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+
+            $addFileLink.on('click', function(e) {
+                e.preventDefault();
+                addFileForm($collectionHolder);
+            });
+            $collectionHolder.find('li').each(function() {
+                console.log($(this));
+                addFileFormDeleteLink($(this));
+            });
+        });
+        
+        function addFileForm($collectionHolder) {        
+            var prototype = $collectionHolder.data('prototype');
+            var index = $collectionHolder.data('index');
+            var newForm = prototype.replace(/__name__/g, index);
+            $collectionHolder.data('index', index + 1);
+            var $newFormLi = $('<li></li>').append(newForm);
+            $collectionHolder.append($newFormLi);
+            addFileFormDeleteLink($newFormLi);
+        }
+        
+        function addFileFormDeleteLink($fileFormLi) {
+            var $removeFormA = $('<a href="#">X</a>');
+            $fileFormLi.append($removeFormA);
+            $removeFormA.on('click', function(e) {                
+                e.preventDefault();
+                $fileFormLi.remove();
+            });
+        }        
+    </script>
+{% endblock %}

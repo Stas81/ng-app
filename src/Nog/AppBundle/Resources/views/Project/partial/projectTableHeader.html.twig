@@ -1,0 +1,25 @@
+<tr>
+{% if rating is defined %}
+
+    <th rowspan="2">Project Name / Description</th>
+    <th rowspan="2">Date Created</th>
+    <th rowspan="2">Author</th>
+    <th rowspan="2">Files</th>
+    <th colspan="3">Ratings</th>
+    <th rowspan="2">Status</th>
+{% else %}
+    <th>Project Name / Description</th>
+    <th>Date Created</th>
+    <th>Author</th>
+    <th>Files</th>    
+    <th>Status</th>    
+{% endif %}
+</tr>
+
+{% if rating is defined %}
+    <tr>
+        {% for ratingType in rating.types %}
+            <th>{{ ratingType.name }}</th>
+        {% endfor %}
+    </tr>
+{% endif %}

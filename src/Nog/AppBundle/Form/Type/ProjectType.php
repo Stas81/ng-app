@@ -20,9 +20,11 @@ class ProjectType extends AbstractType
         $builder
             ->add('name')
             ->add('description')
-            ->add('files', 'collection', 
-                    array('type' => new FileType(), 
+            ->add('files', 'collection',
+                    array('type' => new FileType(),
+                        'label' => false,
                         'allow_add' => true, 
+                        'allow_delete' => true,
                         'by_reference' => false,
                         ))
             ->add('save', 'submit');

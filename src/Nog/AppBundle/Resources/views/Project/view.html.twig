@@ -1,0 +1,8 @@
+{% extends "::base.html.twig" %}
+{% block body %}
+    <table class="table table-responsive">
+        {% include 'NogAppBundle:Project:partial/projectTableHeader.html.twig' %}
+        {% include 'NogAppBundle:Project:partial/projectTableRow.html.twig' %}
+    </table>
+    
+{% endblock %}

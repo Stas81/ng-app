@@ -1,0 +1,33 @@
+        <tr>
+            <td> <a href="{{ path('view-project', {'id': project.id}) }}">{{ project.name }}</a>
+                <p>{{ project.description }}</p>
+            </td>
+            <td>{{ project.dateCreated|date('Y-m-d h:m') }}</td>
+            <td>{{ project.author.username }} ({{ project.author.email }})</td>
+            <td>
+                <ul>
+                {% for ProjectFile in project.files %}
+                    <li>
+                        <a href="{{ vich_uploader_asset(ProjectFile, 'file') }}" target="blank">{{ ProjectFile.name }}</a>
+                    </li>
+                {% endfor %}
+                </ul>                
+            </td>
+            {% if rating is defined %}
+                {% for rate in rating.rates %}
+                    <th>{{ rate }}</th>
+                {% endfor %}
+            {% endif %}
+            <td>                
+                {% set status = projectStatus(project.status) %}                
+                {% if project.status == 0 %}
+                    <span class="label label-info">{{ status }}</span>
+                {% elseif project.status == 1 %}
+                    <span class="label label-warning">{{ status }}</span>
+                {% elseif project.status == 2 %}
+                    <span class="label label-success">{{ status }}</span>
+                {% elseif project.status == 3 %}
+                    <span class="label label-danger">{{ status }}</span>
+                {% endif %}
+            </td>
+        </tr>

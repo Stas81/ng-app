@@ -1,0 +1,15 @@
+{% extends "::base.html.twig" %}
+{% block body %}    
+{{ form_start(form) }}
+    {{ form_row(form.name) }}
+    {{ form_row(form.description) }}    
+    <div id="files-forms-add">
+        <a href="#" class="add_file_link">Add a file</a>
+    </div>
+    <ul class="files" data-prototype="{{ form_widget(form.files.vars.prototype)|e }}">        
+        {% for file in form.files %}
+            <li class="project-file">{{ form_row(file.file) }}</li>
+        {% endfor %}
+    </ul>
+{{ form_end(form) }}
+{% endblock %}

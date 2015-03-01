@@ -1,0 +1,18 @@
+services:
+    sonata.admin.ratingType:
+        class: Nog\AppBundle\Admin\RatingTypeAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Ratings", label: "RatingTypes" }
+        arguments:
+            - ~
+            - Nog\AppBundle\Entity\RatingType
+            - ~
+
+    sonata.admin.rater:
+        class: Nog\AppBundle\Admin\RaterAdmin
+        tags:
+            - { name: sonata.admin, manager_type: orm, group: "Ratings", label: "Raters", show_in_dashboard: false }
+        arguments:
+            - ~
+            - Nog\AppBundle\Entity\Rater
+            - ~            
